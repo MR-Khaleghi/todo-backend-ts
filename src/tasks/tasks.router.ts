@@ -1,13 +1,12 @@
-import { TasksController } from './tasks.controller';
-import { Router, Response, Request } from 'express';
+import { createValidator, updateValidator } from './tasks.validator';
+import { taskController } from './tasks.controller';
+import { Router } from 'express';
 
 export const tasksRouter: Router = Router();
 
 //create default route
-tasksRouter.get('/tasks', async (req: Request, res: Response) => {
-  const tasksController = new TasksController();
-  const allTasks = await tasksController.getAll();
-  res.json(allTasks).status(200);
+tasksRouter.get('/tasks', taskController.getAll);
 
-  //   res.send('test');
-});
+tasksRouter.post('/tasks', createValidator, taskController.create);
+
+tasksRouter.put('/tasks', updateValidator, taskController.update);
